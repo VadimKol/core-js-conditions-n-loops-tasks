@@ -64,31 +64,9 @@ function getMaxNumber(a, b, c) {
  * {x: 1, y: 1}, {x: 2, y: 8} => false
  */
 function canQueenCaptureKing(queen, king) {
-  let { x, y } = queen;
   if (queen.y === king.y || queen.x === king.x) return true;
-  while (x <= 8 && y <= 8) {
-    if (x === king.x && y === king.y) return true;
-    x += 1;
-    y += 1;
-  }
-  ({ x, y } = queen);
-  while (x >= 1 && y >= 1) {
-    if (x === king.x && y === king.y) return true;
-    x -= 1;
-    y -= 1;
-  }
-  ({ x, y } = queen);
-  while (x >= 1 && y <= 8) {
-    if (x === king.x && y === king.y) return true;
-    x -= 1;
-    y += 1;
-  }
-  ({ x, y } = queen);
-  while (x >= 8 && y >= 1) {
-    if (x === king.x && y === king.y) return true;
-    x += 1;
-    y -= 1;
-  }
+  const dif = Math.abs(king.y - queen.y);
+  if (queen.x - dif === king.x || queen.x + dif === king.x) return true;
   return false;
 }
 
