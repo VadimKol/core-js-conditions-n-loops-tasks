@@ -488,8 +488,52 @@ function shuffleChar(str, iterations) {
  * @param {number} number The source number
  * @returns {number} The nearest larger number, or original number if none exists.
  */
-function getNearestBigger(/* number */) {
-  throw new Error('Not implemented');
+function getNearestBigger(number) {
+  let str = '';
+  const temp = [];
+  const arr = Array.from(String(number));
+
+  let min;
+  let minIndex;
+
+  let left;
+  let right;
+  let leftStr = '';
+  let rightStr = '';
+
+  function getAllBigger() {
+    for (let i = arr.length - 1; i >= 0; i -= 1)
+      for (let j = i - 1; j >= 0; j -= 1)
+        if (arr[i] > arr[j]) {
+          [arr[i], arr[j]] = [arr[j], arr[i]];
+          let tempStr = '';
+          for (let k = 0; k < arr.length; k += 1) tempStr += arr[k];
+          temp.push({
+            index: j,
+            number: Number(tempStr),
+          });
+          [arr[i], arr[j]] = [arr[j], arr[i]];
+        }
+  }
+  function findMin() {
+    min = Math.min(...temp.map((cur) => cur.number));
+    for (let i = 0; i < temp.length; i += 1)
+      if (min === temp[i].number) minIndex = temp[i].index;
+  }
+  function sortTail() {
+    left = Array.from(String(min)).splice(0, minIndex + 1);
+    right = Array.from(String(min)).splice(minIndex + 1);
+
+    right = right.sort((a, b) => a - b);
+    for (let i = 0; i < left.length; i += 1) leftStr += left[i];
+    for (let i = 0; i < right.length; i += 1) rightStr += right[i];
+    str = leftStr + rightStr;
+  }
+
+  getAllBigger();
+  findMin();
+  sortTail();
+  return Number(str);
 }
 
 module.exports = {
