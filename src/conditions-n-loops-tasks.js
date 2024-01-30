@@ -405,48 +405,29 @@ function rotateMatrix(matrix) {
  *  [-2, 9, 5, -3]  => [-3, -2, 5, 9]
  */
 function sortByAsc(arr) {
-  const size = arr.length;
-  function merge(l, r) {
-    const temp = [];
-    let count = 0;
-    let i;
-    let j;
-    for (i = 0, j = 0; i < l.length && j < r.length; ) {
-      if (l[i] < r[j]) {
-        temp[count] = l[i];
-        count += 1;
-        i += 1;
-      } else {
-        temp[count] = r[j];
-        count += 1;
-        j += 1;
-      }
+  const sorted = arr;
+
+  function buildHeap(array, n, i) {
+    const heap = array;
+    let max = i;
+    const left = 2 * i + 1;
+    const right = 2 * i + 2;
+    if (left < n && array[left] > array[max]) max = left;
+    if (right < n && array[right] > array[max]) max = right;
+    if (max !== i) {
+      [heap[i], heap[max]] = [heap[max], heap[i]];
+      buildHeap(array, n, max);
     }
-    for (; i < l.length; i += 1) {
-      temp[count] = l[i];
-      count += 1;
-    }
-    for (; j < r.length; j += 1) {
-      temp[count] = r[j];
-      count += 1;
-    }
-    return temp;
   }
 
-  if (size > 1) {
-    let left = [];
-    let right = [];
-    const middle = Math.floor(size / 2);
-    for (let i = 0; i < middle; i += 1) left[i] = arr[i];
-    for (let i = middle, j = 0; i < size; i += 1, j += 1) right[j] = arr[i];
+  for (let i = sorted.length - 1; i >= 0; i -= 1)
+    buildHeap(sorted, sorted.length, i);
 
-    left = sortByAsc(left);
-    right = sortByAsc(right);
-
-    return merge(left, right);
+  for (let i = sorted.length - 1; i >= 0; i -= 1) {
+    [sorted[0], sorted[i]] = [sorted[i], sorted[0]];
+    buildHeap(sorted, i, 0);
   }
-
-  return arr;
+  return sorted;
 }
 
 /**
