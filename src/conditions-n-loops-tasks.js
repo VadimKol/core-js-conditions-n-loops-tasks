@@ -365,32 +365,29 @@ function getSpiralMatrix(size) {
  *  ]                 ]
  */
 function rotateMatrix(matrix) {
-  const temp = [];
-  const rotatedMatrix = matrix;
+  const rotated = matrix;
   let s = 0;
-  const size = matrix.length;
+  const size = matrix.length - 1;
 
-  for (let i = 0; i < size; i += 1) {
-    temp[i] = [];
-    for (let j = 0; j < size; j += 1) temp[i][j] = Math.PI;
-  }
-
-  while (s <= size / 2) {
-    for (let i = s, j = s; j < size - s; j += 1)
-      if (temp[i][j] === Math.PI) temp[i][j] = matrix[size - 1 - j][s];
-    for (let i = s, j = size - 1 - s; i < size - s; i += 1)
-      if (temp[i][j] === Math.PI) temp[i][j] = matrix[s][i];
-    for (let i = size - 1 - s, j = s; j < size - s; j += 1)
-      if (temp[i][j] === Math.PI)
-        temp[i][j] = matrix[size - 1 - j][size - 1 - s];
-    for (let i = s, j = s; i < size - s; i += 1)
-      if (temp[i][j] === Math.PI) temp[i][j] = matrix[size - 1 - s][i];
+  while (s <= matrix.length / 2) {
+    for (let i = s, j = s; j < size - s; j += 1) {
+      [rotated[i][j], rotated[size - j][i]] = [
+        rotated[size - j][i],
+        rotated[i][j],
+      ];
+      [rotated[size - j][i], rotated[size - s][size - j]] = [
+        rotated[size - s][size - j],
+        rotated[size - j][i],
+      ];
+      [rotated[size - s][size - j], rotated[j][size - s]] = [
+        rotated[j][size - s],
+        rotated[size - s][size - j],
+      ];
+    }
     s += 1;
   }
-  for (let i = 0; i < size; i += 1)
-    for (let j = 0; j < size; j += 1) rotatedMatrix[i][j] = temp[i][j];
 
-  return rotatedMatrix;
+  return rotated;
 }
 
 /**
