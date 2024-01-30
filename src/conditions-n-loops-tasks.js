@@ -327,10 +327,10 @@ function getSpiralMatrix(size) {
   const matrix = [];
   let count = 1;
   let s = 0;
-  for (let i = 0; i < size; i += 1) matrix[i] = [];
-
-  for (let i = 0; i < size; i += 1)
+  for (let i = 0; i < size; i += 1) {
+    matrix[i] = [];
     for (let j = 0; j < size; j += 1) matrix[i][j] = 0;
+  }
 
   function addItem(i, j) {
     if (matrix[i][j] === 0) {
