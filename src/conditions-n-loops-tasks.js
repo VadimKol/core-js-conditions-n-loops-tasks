@@ -405,29 +405,45 @@ function rotateMatrix(matrix) {
  *  [-2, 9, 5, -3]  => [-3, -2, 5, 9]
  */
 function sortByAsc(arr) {
-  const sorted = arr;
-
-  function buildHeap(array, n, i) {
-    const heap = array;
-    let max = i;
-    const left = 2 * i + 1;
-    const right = 2 * i + 2;
-    if (left < n && array[left] > array[max]) max = left;
-    if (right < n && array[right] > array[max]) max = right;
-    if (max !== i) {
-      [heap[i], heap[max]] = [heap[max], heap[i]];
-      buildHeap(array, n, max);
+  let temp = [];
+  let p;
+  let indexP;
+  function partition(array, low, high) {
+    const linkarr = array;
+    let j = 0;
+    for (let i = low; i <= high; i += 1)
+      if (array[i] < p) {
+        temp[j] = array[i];
+        j += 1;
+      }
+    for (let i = low; i <= high; i += 1)
+      if (array[i] === p) {
+        temp[j] = array[i];
+        j += 1;
+      }
+    for (let i = low; i <= high; i += 1)
+      if (array[i] > p) {
+        temp[j] = array[i];
+        j += 1;
+      }
+    j = 0;
+    for (let i = low; i <= high; i += 1, j += 1) linkarr[i] = temp[j];
+    temp = [];
+    for (let i = low; i <= high; i += 1) if (array[i] === p) return i;
+    return 0;
+  }
+  function quickSort(array, low, high) {
+    if (low < high) {
+      p = array[low + Math.floor((high - low) / 2)];
+      if (high - low > 0) {
+        indexP = partition(array, low, high);
+        quickSort(array, low, indexP);
+        quickSort(array, indexP + 1, high);
+      }
     }
   }
-
-  for (let i = sorted.length - 1; i >= 0; i -= 1)
-    buildHeap(sorted, sorted.length, i);
-
-  for (let i = sorted.length - 1; i >= 0; i -= 1) {
-    [sorted[0], sorted[i]] = [sorted[i], sorted[0]];
-    buildHeap(sorted, i, 0);
-  }
-  return sorted;
+  quickSort(arr, 0, arr.length - 1);
+  return arr;
 }
 
 /**
